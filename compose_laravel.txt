@@ -1,0 +1,31 @@
+$ docker ps # Voir les containers en cours
+$ docker ps -a # Voir tous les containers
+$ docker images # Voir toutes les images installées
+$ docker exec -it blog-server bash # Lancer bash dans le container blog-server en mode interactif
+
+# Monter une image appelée laravel-blog via le Dockerfile du dossier courant
+$ docker build -t laravel-blog .
+
+# Installer les dépendances via l'image composer dans le dossier courant
+$ docker run -it --rm -v $(pwd):/app composer/composer install
+
+# Mettre en place un container MySQL avec une base de données sauvegardée sur l'host
+$ docker run --name mysql -p 3306:3306 -v $(pwd)/tmp/db:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=secret -e MYSQL_DATABASE=laravel-blog -d mysql
+
+# Lancer le container de l'application pour PHP-FPM
+$ docker run --name blog-server -v $(pwd):/application --link mysql:mysql -d laravel-blog
+# Lancer le moteur de jobs de Laravel
+$ docker run --name queue-server -v $(pwd):/application --link mysql:mysql -d laravel-blog php artisan queue:work
+
+# Lancer les migrations de Laravel
+$ docker run --rm -it --link mysql -v $(pwd):/application laravel-blog php artisan migrate
+# Lancer les seeds de Laravel
+$ docker run --rm -it --link mysql -v $(pwd):/application laravel-blog php artisan db:seed
+
+# Lancer nginx sur le port 80
+$ docker run --name nginx --link blog-server -v $(pwd)/nginx.conf:/etc/nginx/conf.d/default.conf -v $(pwd):/application -p 80:80 -d nginx
+
+# Installer les dépendances JavaScript via npm
+$ docker run --rm -it -v $(pwd):/application -w /application node:7 npm install
+# Compiler les assets du projet via un script npm
+$ docker run --rm -it -v $(pwd):/application -w /application node:7 npm run production
