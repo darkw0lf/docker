@@ -3,7 +3,7 @@
 FROM oraclelinux:7.0
 # Maintainer
 # ----------
-MAINTAINER Mohamed Bouchenafa <mbouchenafa@smartwavesa.com>
+MAINTAINER Pascal Sené <pascalsene@gmail.com>
 # Install wget
 # -------------
 RUN yum -y installwget
