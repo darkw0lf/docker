@@ -1,8 +1,8 @@
-# Se base sur l'image ubuntu version 18.04
-FROM ubuntu:18.04
+# Se base sur l'image ubuntu version 20.04
+FROM ubuntu:20.04
 
-# Mettre a jour les packages linux
-RUN apt-get update
+Remplacer la dernière ligne du Dockerfile par :
+CMD while true; do ps -aux; sleep 2; done
 
-# Lance le shell Bash au lancement du conteneur
-CMD echo "Hello !"
+Supprimer la ligne qui effectue la mise à jour des packages Linux :
+#RUN apt-get update
