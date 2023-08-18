@@ -11,7 +11,7 @@ services:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_PASSWORD: 123456
     ports:
-      - 9090:80
+      - 80:80
       - 443:443
     networks:
       - back
