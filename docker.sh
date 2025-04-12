@@ -8,3 +8,6 @@ docker ps -a|sed "1 d"|awk '{print $1}'|xargs docker rm
 
 #Supprimer toutes les images
 docker images|sed "1 d"|awk '{print $3}'|sort|uniq|xargs docker rmi --force
+
+#Purge
+docker system prune -a -f 
